@@ -1,0 +1,13 @@
+#+TITLE: vizRNAseq R package
+#+AUTHOR: ZGUANG@LZU
+#+OPTIONS: toc:nil ^:{} html-style:nil html-scripts:nil
+#+STARTUP: showall
+
+* Install / 软件包安装
+The package can be install with *devtools* from *github* by execute the following commands in R:
+#+BEGIN_SRC R :exports code :tangle no :eval never :ravel eval=FALSE
+  ## install.packages('devtools')
+  require('devtools')
+  install_github('zgzhao/vizRNAseq')
+#+END_SRC
+-------------
