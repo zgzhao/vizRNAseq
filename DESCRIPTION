@@ -1,0 +1,18 @@
+Package: vizRNAseq
+Version: 0.1.0
+Date: 2017-09-25
+Title: RNAseq data visualization.
+Author: Zhiguang Zhao
+Maintainer: Zhiguang Zhao <zhiguang.zhao@gmail.com>
+Description: RNAseq data visualization for publication.
+Depends:
+	apcluster,
+    reshape2,
+	RColorBrewer,
+	scales,
+	ggplot2,
+	pheatmap,
+    gplots,
+	VennDiagram
+License: GPL (>= 2)
+RoxygenNote: 6.0.1
