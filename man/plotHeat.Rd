@@ -10,15 +10,12 @@ plotHeat(
   agi = NULL,
   alias = NULL,
   fname = NULL,
-  width = 800,
-  height = 200,
-  v.cut = NULL,
-  fontsize = 9,
-  fontsize_row = 12,
-  fontsize_col = 6,
+  trans.axis = FALSE,
+  v.cut = 4,
   cut.k = 20,
   border = NA,
   clust.row = FALSE,
+  clust.col = TRUE,
   ...
 )
 }
@@ -31,23 +28,15 @@ plotHeat(
 
 \item{alias}{Gene name alias.}
 
-\item{fname}{File path for save tiff figure.}
-
-\item{width}{Figure width.}
-
-\item{height}{Figure height}
-
-\item{fontsize}{Base font size}
-
-\item{fontsize_row}{Font size for row labels.}
-
-\item{fontsize_col}{Font size for column labels.}
-
 \item{cut.k}{Number to cut.}
 
 \item{clust.row}{TRUE/FALSE.}
 
 \item{...}{Further params passed to pheatmap function.}
+
+\item{width}{Figure width.}
+
+\item{height}{Figure height}
 }
 \description{
 Plot heatmap with pheatmap
