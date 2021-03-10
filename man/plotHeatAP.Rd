@@ -4,8 +4,17 @@
 \alias{plotHeatAP}
 \title{plotHeatAP}
 \usage{
-plotHeatAP(dtx, agi = NULL, gids = NULL, apclust = TRUE, fname = NULL,
-  width = 400, height = 600, v.cut = 6, ...)
+plotHeatAP(
+  dtx,
+  agi = NULL,
+  gids = NULL,
+  apclust = TRUE,
+  fname = NULL,
+  width = 400,
+  height = 600,
+  v.cut = 6,
+  ...
+)
 }
 \arguments{
 \item{dtx}{}

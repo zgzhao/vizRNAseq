@@ -4,10 +4,24 @@
 \alias{plotChart}
 \title{Function: plotChart}
 \usage{
-plotChart(dtx, dts, agi = NULL, alias = NULL, samples = NULL,
-  id.label = FALSE, gtheme = NULL, sig.size = 5, clust = FALSE,
-  del = NULL, num = FALSE, flip = FALSE, fname = NULL, width = 400,
-  height = 300, ...)
+plotChart(
+  dtx,
+  dts,
+  agi = NULL,
+  alias = NULL,
+  samples = NULL,
+  id.label = FALSE,
+  gtheme = NULL,
+  sig.size = 5,
+  clust = FALSE,
+  del = NULL,
+  num = FALSE,
+  flip = FALSE,
+  fname = NULL,
+  width = 400,
+  height = 300,
+  ...
+)
 }
 \arguments{
 \item{alias}{gene name alias.}

@@ -4,10 +4,24 @@
 \alias{plotHeat2}
 \title{Function: plotHeat2}
 \usage{
-plotHeat2(dtx, gids, treats = NULL, cut.k = 8, fname = NULL,
-  width = 1000, height = 250, v.cut = 0.5, border = "gray",
-  del = NULL, flip = FALSE, gtheme = NULL, fill.mid = "white",
-  fill.low = "steelblue", fill.high = "sienna4", fill.legend = TRUE)
+plotHeat2(
+  dtx,
+  gids,
+  treats = NULL,
+  cut.k = 8,
+  fname = NULL,
+  width = 1000,
+  height = 250,
+  v.cut = 0.5,
+  border = "gray",
+  del = NULL,
+  flip = FALSE,
+  gtheme = NULL,
+  fill.mid = "white",
+  fill.low = "steelblue",
+  fill.high = "sienna4",
+  fill.legend = TRUE
+)
 }
 \arguments{
 \item{dtx}{data.frame}

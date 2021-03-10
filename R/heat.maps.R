@@ -6,23 +6,20 @@
 #' @param gids gene_id to subset.
 #' @param agi agi to subset.
 #' @param alias Gene name alias.
-#' @param fname File path for save tiff figure.
 #' @param width Figure width.
 #' @param height Figure height
-#' @param fontsize Base font size
-#' @param fontsize_row Font size for row labels.
-#' @param fontsize_col Font size for column labels.
 #' @param cut.k Number to cut.
 #' @param clust.row TRUE/FALSE.
 #' @param ... Further params passed to pheatmap function.
 #' @return NULL
 #' @author ZG Zhao
 #' @export
-plotHeat <- function(datax, gids=NULL, agi=NULL, alias=NULL, fname=NULL, width=800, height=200, v.cut=NULL, 
-                     fontsize=9, fontsize_row=12, fontsize_col=6, cut.k=20, border=NA, 
-                     clust.row = FALSE, ...){
+plotHeat <- function(datax, gids=NULL, agi=NULL, alias=NULL, fname=NULL,
+                     trans.axis=FALSE, v.cut=4, cut.k=20, border=NA,
+                     clust.row = FALSE, clust.col=TRUE, ...){
     if (! "agi" %in% colnames(datax)) datax$agi <- datax$gene_id
-    
+
+    ## --------------------
     if (! is.null(agi) ) {
         dtx <- datax[datax$agi %in% agi, ]
         if ( is.null(alias) ) alias <- dtx$agi
@@ -33,9 +30,10 @@ plotHeat <- function(datax, gids=NULL, agi=NULL, alias=NULL, fname=NULL, width=8
     } else {
         if (is.null(gids)) dtx <- datax
         else dtx <- datax[datax$gene_id %in% gids, ]
-        alias <- dtx$agi        
+        if(is.null(alias)) alias <- dtx$agi
     }
-    
+
+    ## --------------------
     annos <- c("gene_id", "agi", "gene_short_name", "alias")    
     rownames(dtx) <- dtx$gene_id    
     dxx <- t(dtx[, ! colnames(dtx) %in% annos])
@@ -43,123 +41,42 @@ plotHeat <- function(datax, gids=NULL, agi=NULL, alias=NULL, fname=NULL, width=8
         xcut <- v.cut + 0.6
         dxx[dxx > xcut] <- xcut
         dxx[dxx < -xcut] <- -xcut
-    }
+    } else xcut <- ceiling(max(dxx))
 
+    ## --------------------
     xmin <- min(round(dxx * 10)/10)
     xmax <- max(round(dxx * 10)/10)
-    cols <- NULL
-    brks <- seq(xmin, xmax, by=0.1)
-    if (xmin < 0) {
-        mm <- length(seq(xmin, 0, by=0.1))
-        cols <- c(cols, colorRampPalette(c("black", "steelblue", "white"))(mm))
+    col1 <- col2 <- NULL
+    xrange <- brks <- seq(xmin, xmax, by=0.1)
+    if(xmin > -xcut) xrange <- c(seq(-xcut, xmin - 0.1, by=0.1), xrange)
+    if(xmax < xcut) xrange <- c(xrange, seq(xmax + 0.1, xcut, by=0.1))
+    nn <- floor(length(xrange) / 2)
+    col1 <- colorRampPalette(c("black", "steelblue", "white"))(nn)
+    col2 <- colorRampPalette(c("white", "orangeRed", "darkRed"))(nn + 1)
+    cols <- c(col1, col2)
+    cols <- cols[xrange %in% brks]
+    cols <- colorRampPalette(cols)(length(brks))
+    ## --------------------
+    if(trans.axis) {
+        dxx <- t(dxx)
+        pheatmap(dxx, color = cols, labels_row = alias, cutree_rows=cut.k,
+                 cluster_rows = clust.row, cluster_cols=clust.col, fontfamily="Helvetica",
+                 border_color=border, breaks=brks, ...)
+    } else {
+        pheatmap(dxx, color = cols, labels_col = alias, cutree_cols=cut.k,
+                 cluster_rows = clust.row, cluster_cols=clust.col, fontfamily="Helvetica",
+                 border_color=border, breaks=brks, ...)
     }
-    if (xmax > 0) {
-        nn <- length(seq(0, xmax, by=0.1))
-        cols <- c(cols, colorRampPalette(c("white", "orangeRed", "darkRed"))(nn))
-    }
-    cols <- colorRampPalette(cols)(length(brks) - 1)
-    
-    if (! is.null(fname)) tiff(fname, width=width, height=height)
-    pheatmap(dxx, color = cols, labels_col = alias, cutree_cols=cut.k, cluster_rows = clust.row, fontfamily="Helvetica", 
-             border_color=border, breaks=brks, ...)
-    if (! is.null(fname)) dev.off()
-}
-
-#' plotHeatAP
-#'
-#' plotHeatAP
-#' @title plotHeatAP
-#' @param dtx 
-#' @param agi 
-#' @param gids 
-#' @param fname 
-#' @param width 
-#' @param height 
-#' @param v.cut 
-#' @param ... 
-#' @return NULL
-#' @author ZG Zhao
-#' @export
-plotHeatAP <- function(dtx, agi=NULL, gids=NULL, apclust=TRUE, fname=NULL, width=400, height=600, v.cut=6, ...){
-    
-    if (! "agi" %in% colnames(dtx)) dtx$agi <- dtx$gene_id
-    if (!is.null(gids)) dtx <- dtx[dtx$gene_id %in% gids, ]
-    
-    rowlab <- dtx$gene_id
-    if (! is.null(agi) ) {
-        dtx <- dtx[dtx$agi %in% agi, ]
-        rowlab <- dtx$agi
-    }
-    
-    if (apclust) {
-        if (nrow(dtx) > 2000) stop("AP data should not exceed 2000 rows!")
-        
-        xdist <- function(x) { negDistMat(x) }
-        xclust <- function(x) {
-            aggres <- aggExCluster(negDistMat(r=2), x)
-            as.hclust(aggres)
-        }
-    }
-    
-    annos <- c("gene_id", "agi", "gene_short_name", "alias")    
-    rownames(dtx) <- dtx$gene_id    
-    dtx <- as.matrix(dtx[, ! colnames(dtx) %in% annos])
-    
-    ## 颜色设置
-    xcut <- v.cut + 0.6
-    dtx[dtx > xcut] <- xcut
-    dtx[dtx < -xcut] <- -xcut
-    
-    xmin <- min(round(dtx * 10)/10)
-    xmax <- max(round(dtx * 10)/10)
-    cols <- NULL
-    brks <- seq(xmin * 10, xmax * 10, by=1)
-    xn <- length(brks)
-    if (xmin < 0) {
-        mm <- length(seq(xmin, 0, by=0.1))
-        cols <- c(cols, colorRampPalette(c("black", "steelblue", "white"))(mm))
-    }
-    if (xmax > 0) {
-        nn <- length(seq(0, xmax, by=0.1))
-        cols <- c(cols, colorRampPalette(c("white", "orangeRed", "darkRed"))(nn))
-    }
-    cols <- colorRampPalette(cols)(xn)
-    xll <- brks %in% seq(-v.cut * 10, v.cut * 10, by=20)
-    
-    lmat <- rbind( c(5,3,4), c(2,1,4))
-    lhei <- c(1, 7)
-    lwid <- c(1, 5, 0.5)
-    xbar <-  function() {
-        oldpar <- par(c("mar", "mgp"))
-        par(mar=c(2.5, 0.5, 2, 0.1), mgp=c(1, 0.5, 0))
-        xx <- barplot(rep(1, xn), col=cols, border=cols, axes=FALSE)
-        axis(1, at=xx[xll], labels=brks[xll]/10, lwd=.1)
-        par(oldpar)
-    }
-    
-    if (! is.null(fname)) tiff(fname, width=width, height=height)
-    if (apclust) 
-        heatmap.2(dtx, distfun = xdist, hclustfun = xclust, col=cols, labRow = rowlab,
-                  lmat=lmat, lhei=lhei, lwid=lwid, key=FALSE, extrafun=xbar,
-                  scale="none", density.info="none", trace="none", ...)
-    else
-        heatmap.2(dtx, col=cols, labRow = rowlab, lmat=lmat, lhei=lhei, lwid=lwid, key=FALSE, extrafun=xbar,
-                  scale="none", density.info="none", trace="none", ...)
-
-    if (! is.null(fname)) dev.off()
 }
 
 #' plot heatmap with ggplot2
 #'
 #' Select a subset of genes and plot expression heatmap.
-#' @title Function: plotHeat2
+#' @title Function: plotGHeat
 #' @param dtx data.frame
 #' @param gids names of gene subset for plotting.
 #' @param treats Sample name labels.
 #' @param cut.k groups to cut (for cutree).
-#' @param fname Image file name.
-#' @param width figure width
-#' @param height figure height
 #' @param border color for geom_tile.
 #' @param del columns to omit.
 #' @param flip TRUE/FALSE. flip xy
@@ -169,7 +86,7 @@ plotHeatAP <- function(dtx, agi=NULL, gids=NULL, apclust=TRUE, fname=NULL, width
 #' @return NULL
 #' @author ZG Zhao
 #' @export
-plotHeat2 <- function(dtx, gids, treats=NULL, cut.k=8, fname=NULL, width=1000, height=250, v.cut=0.5, 
+plotGHeat <- function(dtx, gids, treats=NULL, cut.k=8, v.cut=0.5,
                      border="gray", del=NULL, flip=FALSE, gtheme=NULL,
                      fill.mid="white", fill.low="steelblue", fill.high="sienna4",
                      fill.legend=TRUE){
@@ -207,11 +124,5 @@ plotHeat2 <- function(dtx, gids, treats=NULL, cut.k=8, fname=NULL, width=1000, h
     p <- p + theme(axis.ticks = element_blank(), axis.line=element_blank(), axis.title = element_blank())
 
     if (! fill.legend ) p <- p + scale_fill_continuous(guide=FALSE)
-    if (is.null(fname)) print(p)
-    else {
-        tiff(fname, width = width, height = height)
-        print(p)
-        dev.off()
-    }
+    print(p)
 }
-

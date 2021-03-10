@@ -4,9 +4,21 @@
 \alias{plotFPKM}
 \title{plotFPKM function.}
 \usage{
-plotFPKM(dtx, agi = NULL, alias = NULL, gids = NULL, filename = NULL,
-  width = 400, height = 300, sig.size = 12, y.expand = 1.05,
-  nrow = NULL, ncol = NULL, cols = c("gray80", "gray30"), gtheme = NULL)
+plotFPKM(
+  dtx,
+  agi = NULL,
+  alias = NULL,
+  gids = NULL,
+  filename = NULL,
+  width = 400,
+  height = 300,
+  sig.size = 12,
+  y.expand = 1.05,
+  nrow = NULL,
+  ncol = NULL,
+  cols = c("gray80", "gray30"),
+  gtheme = NULL
+)
 }
 \arguments{
 \item{dtx}{data.frame}

@@ -60,15 +60,15 @@ plotFPKM <- function(dtx, agi=NULL, alias=NULL, gids=NULL,
     xlabeller <- function(labels, multi_line = FALSE){
         labels <- label_value(labels, multi_line = multi_line)
         lapply(labels, function(values) {
-            values <- paste0("list(", alias[values], ")")
+            values <- paste0("list(`", alias[values], "`)")
             lapply(values, function(expr) c(parse(text = expr)))
         })
     }
     
-    p <- ggplot(dtx, aes(x=treatment, y=mean, fill=tr.level, ymin=mean - sd, ymax=mean + sd)) + 
+    p <- ggplot(dtx, aes(x=treatment, y=mean, fill=tr.level)) + 
     labs(x = "", y = "Expression (FPKM)") +
     geom_bar(stat="identity", position = position_dodge(), color="gray30") +
-    geom_errorbar(position=position_dodge(0.9), width=.5, colour="gray30") +
+    geom_errorbar(aes(ymin=mean - sd, ymax=mean + sd), position=position_dodge(0.9), width=.5, colour="gray30") +
     geom_text(aes(y=(mean + sd) * y.expand, label="")) + 
     geom_text(aes(y=mean + sd, label=sigs), position=position_dodge(0.9), vjust=-0.2, size=sig.size) + 
     facet_wrap(~gene_id, scales="free_y", labeller=xlabeller, nrow=nrow, ncol=ncol) + scale_fill_manual(values = cols) +

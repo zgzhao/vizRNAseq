@@ -5,14 +5,15 @@ Title: RNAseq data visualization.
 Author: Zhiguang Zhao
 Maintainer: Zhiguang Zhao <zhiguang.zhao@gmail.com>
 Description: RNAseq data visualization for publication.
+License: GPL-3
+Encoding: UTF-8
 Depends:
 	apcluster,
-    reshape2,
+	reshape2,
 	RColorBrewer,
 	scales,
 	ggplot2,
 	pheatmap,
-    gplots,
+	gplots,
 	VennDiagram
-License: GPL (>= 2)
-RoxygenNote: 6.0.1
+RoxygenNote: 7.1.1

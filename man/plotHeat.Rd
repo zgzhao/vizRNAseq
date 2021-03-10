@@ -4,10 +4,23 @@
 \alias{plotHeat}
 \title{Function: plotHeat}
 \usage{
-plotHeat(datax, gids = NULL, agi = NULL, alias = NULL, fname = NULL,
-  width = 800, height = 200, v.cut = NULL, fontsize = 9,
-  fontsize_row = 12, fontsize_col = 6, cut.k = 20, border = NA,
-  clust.row = FALSE, ...)
+plotHeat(
+  datax,
+  gids = NULL,
+  agi = NULL,
+  alias = NULL,
+  fname = NULL,
+  width = 800,
+  height = 200,
+  v.cut = NULL,
+  fontsize = 9,
+  fontsize_row = 12,
+  fontsize_col = 6,
+  cut.k = 20,
+  border = NA,
+  clust.row = FALSE,
+  ...
+)
 }
 \arguments{
 \item{datax}{data.frame. Columns "gene_id" and "agi" are required together with value columns.}

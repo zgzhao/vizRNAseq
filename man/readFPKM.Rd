@@ -4,8 +4,15 @@
 \alias{readFPKM}
 \title{Function readFPKM}
 \usage{
-readFPKM(xfiles, treats, tr.levels = NULL, std = TRUE, sig = TRUE,
-  xpkm = FALSE, control = "")
+readFPKM(
+  xfiles,
+  treats,
+  tr.levels = NULL,
+  std = TRUE,
+  sig = TRUE,
+  xpkm = FALSE,
+  control = ""
+)
 }
 \arguments{
 \item{xfiles}{filename}

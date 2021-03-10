@@ -4,8 +4,17 @@
 \alias{readGIDs}
 \title{Function readGIDs}
 \usage{
-readGIDs(files, reg = c("all", "up", "down"), agi = FALSE, fc = 1.5,
-  labels = NULL, FPKM.cut = 0, q.cut = 1, p.cut = 1, ensemble = NULL)
+readGIDs(
+  files,
+  reg = c("all", "up", "down"),
+  agi = FALSE,
+  fc = 1.5,
+  labels = NULL,
+  FPKM.cut = 0,
+  q.cut = 1,
+  p.cut = 1,
+  ensemble = NULL
+)
 }
 \arguments{
 \item{files}{expression file}

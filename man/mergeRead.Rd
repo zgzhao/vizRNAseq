@@ -4,8 +4,14 @@
 \alias{mergeRead}
 \title{mergeRead function}
 \usage{
-mergeRead(files, d.col = "log2FC_adj", treats = NULL, sels = NULL,
-  keep = TRUE, ...)
+mergeRead(
+  files,
+  d.col = "log2FC_adj",
+  treats = NULL,
+  sels = NULL,
+  keep = TRUE,
+  ...
+)
 }
 \arguments{
 \item{files}{filenames}

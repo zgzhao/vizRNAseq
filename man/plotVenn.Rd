@@ -4,8 +4,17 @@
 \alias{plotVenn}
 \title{plotVenn function}
 \usage{
-plotVenn(dtx, fname, cnames = NULL, fig.size = 600, adj.cat = 0,
-  adj.pos = 0, adj.mar = 0, cex.num = 0, cex.cat = 0)
+plotVenn(
+  dtx,
+  fname,
+  cnames = NULL,
+  fig.size = 600,
+  adj.cat = 0,
+  adj.pos = 0,
+  adj.mar = 0,
+  cex.num = 0,
+  cex.cat = 0
+)
 }
 \arguments{
 \item{dtx}{list of length 3 or 4.}
