@@ -3,12 +3,11 @@ Version: 0.1.0
 Date: 2017-09-25
 Title: RNAseq data visualization.
 Author: Zhiguang Zhao
-Maintainer: Zhiguang Zhao <zhiguang.zhao@gmail.com>
+Maintainer: Zhiguang Zhao <zgzhao@foxmail.com>
 Description: RNAseq data visualization for publication.
 License: GPL-3
 Encoding: UTF-8
 Depends:
-	apcluster,
 	reshape2,
 	RColorBrewer,
 	scales,
