@@ -11,8 +11,23 @@ Depends:
 	reshape2,
 	RColorBrewer,
 	scales,
+	MatrixGenerics,
+	parallel,
+	Biostrings,
+	edgeR,
+	limma,
+	tidyr,
+	readr,
+	stringr,
+	dplyr,
+	purrr,
 	ggplot2,
 	pheatmap,
 	gplots,
-	VennDiagram
-RoxygenNote: 7.1.1
+	multcompView,
+	VennDiagram,
+	igraph
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+

@@ -55,6 +55,7 @@ plotVenn <- function(dtx, fname, cnames=NULL, fig.size=600, adj.cat=0, adj.pos=0
         .venn4(dtx, fname, cnames=cnames, fig.size=fig.size, adj.cat=adj.cat, adj.pos=adj.pos, adj.mar=adj.mar,
                cex.num=cex.num, cex.cat=cex.cat)
     else stop("Input data must be a list of length 3 or 4.")
-    system("rm *.log")
+    logs <- list.files(dirname(fname), "\\.log$", full=T)
+    if(length(logs) > 0) file.remove(logs)
     return(invisible(NULL))
 }

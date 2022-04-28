@@ -1,3 +1,16 @@
+
+#' @export
+vheatmap <- function(mat, vcut=4, border=TRUE, ...) {
+    vcut <- abs(vcut)
+    brks <- seq(-vcut, vcut, by=0.1)
+    nn <- (length(brks) -1)/2
+    col1 <- colorRampPalette(c("black", "steelblue", "white"))(nn)
+    col2 <- colorRampPalette(c("white", "orangeRed", "darkRed"))(nn)
+    cols <- c(col1, col2)
+    bcol <- if(border) 'gray60' else 'transparent'
+    pheatmap(mat, color=cols, breaks = brks, border_color = bcol, ...)
+}
+
 #' Plot heatmap with pheatmap
 #'
 #' Heamap plot function.
@@ -6,15 +19,17 @@
 #' @param gids gene_id to subset.
 #' @param agi agi to subset.
 #' @param alias Gene name alias.
-#' @param width Figure width.
-#' @param height Figure height
+#' @param trans.axis TRUE/FALSE (default)
+#' @param v.cut cut value
 #' @param cut.k Number to cut.
+#' @param border grid border color
 #' @param clust.row TRUE/FALSE.
+#' @param clust.col TRUE/FALSE.
 #' @param ... Further params passed to pheatmap function.
 #' @return NULL
 #' @author ZG Zhao
 #' @export
-plotHeat <- function(datax, gids=NULL, agi=NULL, alias=NULL, fname=NULL,
+plotHeat <- function(datax, gids=NULL, agi=NULL, alias=NULL,
                      trans.axis=FALSE, v.cut=4, cut.k=20, border=NA,
                      clust.row = FALSE, clust.col=TRUE, ...){
     if (! "agi" %in% colnames(datax)) datax$agi <- datax$gene_id
@@ -125,4 +140,40 @@ plotGHeat <- function(dtx, gids, treats=NULL, cut.k=8, v.cut=0.5,
 
     if (! fill.legend ) p <- p + scale_fill_continuous(guide=FALSE)
     print(p)
+}
+
+.trans_exprs <- function(x) {
+    x[x < 1] <- 1
+    log10(x)
+}
+
+#' @export
+exprsHeatmap <- function(exprs_df,
+                          d_cols=NULL, lb_col='gene_id',
+                          g_ids=NULL, trans_axis=FALSE,
+                          ...){
+    if(! 'gene_id' %in% colnames(exprs_df))
+        stop('Must contain `gene_id` column!')
+    if(any(duplicated(exprs_df)))
+        stop('Duplicated gene id is not allowed!')
+
+    if(! is.null(g_ids))
+        exprs_df <- filter(exprs_df, gene_id %in% g_ids)
+    if(is.null(d_cols)) exprs_mx <- select(exprs_df, where(is.numeric))
+    else exprs_mx <- exprs_df[, d_cols]
+    
+    exprs_mx <- as.matrix(exprs_mx) %>% .trans_exprs
+    ss <- apply(exprs_mx, 1, FUN=function(x) !all(x==0))
+    exprs_mx <- exprs_mx[ss, ]
+    exprs_df <- exprs_df[ss, ]
+    if(trans_axis) {
+        exprs_mx <- t(exprs_mx)
+        pheatmap(exprs_mx, scale='row',
+                 cluster_rows = FALSE, cluster_cols = TRUE,
+                 labels_col=exprs_df[[lb_col]], ...)
+    } else {
+        pheatmap(exprs_mx, scale='row',
+                 cluster_rows = TRUE, cluster_cols = FALSE,
+                 labels_row=exprs_df[[lb_col]], angle_col=0, ...)
+    }
 }

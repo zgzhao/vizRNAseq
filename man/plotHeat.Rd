@@ -9,7 +9,6 @@ plotHeat(
   gids = NULL,
   agi = NULL,
   alias = NULL,
-  fname = NULL,
   trans.axis = FALSE,
   v.cut = 4,
   cut.k = 20,
@@ -28,15 +27,19 @@ plotHeat(
 
 \item{alias}{Gene name alias.}
 
+\item{trans.axis}{TRUE/FALSE (default)}
+
+\item{v.cut}{cut value}
+
 \item{cut.k}{Number to cut.}
+
+\item{border}{grid border color}
 
 \item{clust.row}{TRUE/FALSE.}
 
+\item{clust.col}{TRUE/FALSE.}
+
 \item{...}{Further params passed to pheatmap function.}
-
-\item{width}{Figure width.}
-
-\item{height}{Figure height}
 }
 \description{
 Plot heatmap with pheatmap

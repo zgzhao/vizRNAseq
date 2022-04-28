@@ -169,3 +169,39 @@ plotChart <- function(dtx, dts, agi=NULL, alias=NULL, samples=NULL, id.label=FAL
     dev.off()
 }
 
+
+#' @export
+plotCPM <- function(dfx, sig.size=6, y.expand=1.2,
+                    n.row=NULL, cols=NULL, lpos=c(0.1, 0.8), font_size=16,
+                    x.size=1.3){
+    cnames <- colnames(dfx)
+    if (! all(c("gene_id", "mean", "sd", "sigLett", "treatment", "fill") %in% cnames))
+        stop("Invalid data format!")
+    if(! "alias" %in% cnames) dfx$alias <- dfx$gene_id
+    ss <- is.na(dfx$alias) | dfx$alias==""
+    dfx$alias[ss] <- dfx$gene_id[ss]
+    gtheme <- theme_sci(base_size=font_size) +
+        theme(axis.text.x = element_text(angle=0, vjust =1, hjust = 1))
+    if(is.null(cols)) {
+        ncs <- length(unique(dfx$fill))
+        cols <- brewer.pal(8,"Accent")[1:ncs]
+    }
+    pp <- ggplot(dfx, aes(x=treatment, y=mean, fill=fill)) +
+        gtheme +
+        geom_bar(stat="identity", position = position_dodge(), color="gray30") +
+        geom_errorbar(aes(ymin=mean - sd, ymax=mean + sd),
+                      position=position_dodge(0.9), width=.5, colour="gray30") +
+        facet_wrap(~alias, scales="free_y", nrow=n.row) +
+        geom_text(aes(y=(mean + sd) * y.expand, label="")) +
+        geom_text(aes(y=mean + sd, label=sigLett),
+                  position=position_dodge(0.9), vjust=-0.2, size=sig.size) +
+        xlab(label=NULL)+ ylab("Expression (CPM)") +
+        scale_fill_manual(values = cols) +
+        scale_y_continuous(expand = c(0, 0)) +
+        theme(legend.position = lpos,
+              axis.text.x = element_text(
+                  size=rel(x.size),
+                  margin = margin(t = font_size/2),
+                  vjust = 1, hjust=0.5))
+    print(pp)
+}
