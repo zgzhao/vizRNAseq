@@ -4,7 +4,7 @@ Date: 2017-09-25
 Title: RNAseq data processing and visualization
 Author: Zhiguang Zhao
 Maintainer: Zhiguang Zhao <zgzhao@foxmail.com>
-Description: RNAseq data visualization for publication.
+Description: RNAseq data processing and visualization for publication.
 License: GPL-3
 Encoding: UTF-8
 Depends:
