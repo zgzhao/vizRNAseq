@@ -1,7 +1,7 @@
 Package: vizRNAseq
 Version: 0.5.1
 Date: 2017-09-25
-Title: RNAseq data visualization.
+Title: RNAseq data processing and visualization
 Author: Zhiguang Zhao
 Maintainer: Zhiguang Zhao <zgzhao@foxmail.com>
 Description: RNAseq data visualization for publication.
