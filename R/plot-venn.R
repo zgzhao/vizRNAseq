@@ -1,5 +1,6 @@
 .venn3 <- function(dtx, fname, cnames=NULL, fig.size=600, adj.cat=0, adj.pos=0, adj.mar=0, cex.num=0, cex.cat=0) {
     col3 <- c("red", "blue", "green")
+    col3 <- okabe[c(3, 5, 6)]
     if (is.null(cnames)) cnames <- names(dtx)
     venn.diagram(x = dtx, height = fig.size, width = fig.size,
                  filename=fname,
@@ -16,6 +17,7 @@
 
 .venn4 <- function(dtx, fname, cnames=NULL, fig.size=600, adj.cat=0, adj.pos=0, adj.mar=0, cex.num=0, cex.cat=0) {
     col4 <- c("#483D8B", "#DB7093", "#FFD700", "#006400")
+    col4 <- okabe[c(3, 5:7)]
     if (is.null(cnames)) cnames <- names(dtx)
     venn.diagram(x = dtx, height = fig.size, width = fig.size,
                  filename=fname,

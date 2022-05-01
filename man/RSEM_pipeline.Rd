@@ -2,7 +2,7 @@
 % Please edit documentation in R/data.RSEM.R
 \name{RSEM_pipeline}
 \alias{RSEM_pipeline}
-\title{Data export after RSEM abundance estimated.}
+\title{RSEM only: data export after abundance estimated.}
 \usage{
 RSEM_pipeline(
   data_dir,
@@ -10,6 +10,7 @@ RSEM_pipeline(
   controls,
   output_dir = "data",
   isoform = FALSE,
+  CPM = TRUE,
   DEG.fc = 1,
   annotations = NULL
 )
@@ -24,6 +25,8 @@ RSEM_pipeline(
 \item{output_dir}{file path}
 
 \item{isoform}{TRUE/FALSE (default). FALSE for genes, TRUE for isoforms.}
+
+\item{CPM}{TRUE/FALSE. If TRUE (default) return CPM, otherwise return TMM.}
 
 \item{DEG.fc}{numeric, log(fold_changed) threshold.}
 

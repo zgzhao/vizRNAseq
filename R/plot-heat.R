@@ -4,8 +4,10 @@ vheatmap <- function(mat, vcut=4, border=TRUE, ...) {
     vcut <- abs(vcut)
     brks <- seq(-vcut, vcut, by=0.1)
     nn <- (length(brks) -1)/2
-    col1 <- colorRampPalette(c("black", "steelblue", "white"))(nn)
-    col2 <- colorRampPalette(c("white", "orangeRed", "darkRed"))(nn)
+    ## col1 <- colorRampPalette(c("black", "steelblue", "white"))(nn)
+    ## col2 <- colorRampPalette(c("white", "orangeRed", "darkRed"))(nn)
+    col1 <- colorRampPalette(c("black", okabe[5], "white"))(nn)
+    col2 <- colorRampPalette(c("white", okabe[6], "darkRed"))(nn)
     cols <- c(col1, col2)
     bcol <- if(border) 'gray60' else 'transparent'
     pheatmap(mat, color=cols, breaks = brks, border_color = bcol, ...)
