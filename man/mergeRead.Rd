@@ -30,7 +30,7 @@ mergeRead(
 data.frame
 }
 \description{
-Read in and merge data.
+Function for Cuff: read in and merge data.
 }
 \details{
 Read data from cuffdiff result file and merge.

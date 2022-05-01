@@ -1,4 +1,4 @@
-#' readGIDs
+#' Function for Cuff: readGIDs
 #'
 #' readGIDs read in gene_id or agi
 #' @title Function readGIDs
@@ -46,7 +46,7 @@ readGIDs <- function(files, reg=c("all", "up", "down"), agi=FALSE, fc=1.5,
     results
 }
 
-#' Read in and merge data.
+#' Function for Cuff: read in and merge data.
 #'
 #' Read data from cuffdiff result file and merge.
 #' @title mergeRead function
@@ -88,15 +88,14 @@ meltData <- function(dt1, dt2, value.name="value", treats=NULL, tr.levels=NULL) 
 
     dtx <- rbind(dt1, dt2)
     dtx$tr.level <- rep(tr.levels, each=nrow(dt1))
-    
-    dtx <- melt(dtx, varnames = c(keeps, "tr.level"), variable.name = "treatment", value.name = value.name)
-    dtx$treatment <- factor(dtx$treatment, levels = treats)
-    dtx$tr.level <- factor(dtx$tr.level, levels = tr.levels)
-    colnames(dtx) <- c(keeps, "tr.level", "treatment", value.name)
-    dtx
+    dtx %>% pivot_longer(all_of(c(keeps, 'tr.level')),
+                        names_to='treatment',
+                        values_to=value.name) %>%
+        mutate(treatment = factor(treatment, levels = {{treats}}),
+               tr.level = factor(tr.level, levels = {{tr.levels}}))
  }
 
-#' Read FPKM data
+#' Function for Cuff: read FPKM data
 #'
 #' Read FPKM data from files, with or without stdev and significant tr.levels.
 #' @title Function readFPKM

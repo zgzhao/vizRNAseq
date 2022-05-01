@@ -1,6 +1,6 @@
 Package: vizRNAseq
-Version: 0.5.1
-Date: 2017-09-25
+Version: 1.0.1
+Date: 2022-05-01
 Title: RNAseq data processing and visualization
 Author: Zhiguang Zhao
 Maintainer: Zhiguang Zhao <zgzhao@foxmail.com>
@@ -8,11 +8,7 @@ Description: RNAseq data processing and visualization for publication.
 License: GPL-3
 Encoding: UTF-8
 Depends:
-	reshape2,
-	RColorBrewer,
-	scales,
 	MatrixGenerics,
-	parallel,
 	Biostrings,
 	edgeR,
 	limma,
@@ -22,11 +18,15 @@ Depends:
 	dplyr,
 	purrr,
 	ggplot2,
+	RColorBrewer,
+	scales,
 	pheatmap,
 	gplots,
 	multcompView,
 	VennDiagram,
 	igraph
+Suggests:
+	parallel
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2

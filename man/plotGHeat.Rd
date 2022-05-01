@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot-heat.R
 \name{plotGHeat}
 \alias{plotGHeat}
-\title{Function: plotGHeat}
+\title{Deprecated: plotGHeat}
 \usage{
 plotGHeat(
   dtx,
@@ -42,7 +42,7 @@ plotGHeat(
 \item{exprs}{Expression or log2 fold change data. First column should be gene_id.}
 }
 \description{
-plot heatmap with ggplot2
+Deprecated. Use \code{vheatmap} please.
 }
 \details{
 Select a subset of genes and plot expression heatmap.

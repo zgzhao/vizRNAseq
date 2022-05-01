@@ -105,5 +105,6 @@ rex %>% select(-where(is.list)) %>%
 
 * 数据可视化
 请参考函数使用说明
-- vheatmap：表达量热图
 - plotVenn：韦恩图
+- vheatmap：热图
+- plotCPM: 表达量柱形图

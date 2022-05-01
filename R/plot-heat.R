@@ -1,4 +1,13 @@
-
+#' Improved version of pheatmap
+#'
+#' Improvements: (1) white color is fixed to zero; (2) use okabe colors.
+#' @title plot heatmap
+#' @param mat matrix or data.frame/tibble. Refer to \code{\link{pheatmap::pheatmap}}
+#' @param vcut numeric. Cut (max) value.
+#' @param border TRUE/FALSE.
+#' @param ... params passing to pheatmap
+#' @return NULL
+#' @author ZG Zhao
 #' @export
 vheatmap <- function(mat, vcut=4, border=TRUE, ...) {
     vcut <- abs(vcut)
@@ -13,10 +22,10 @@ vheatmap <- function(mat, vcut=4, border=TRUE, ...) {
     pheatmap(mat, color=cols, breaks = brks, border_color = bcol, ...)
 }
 
-#' Plot heatmap with pheatmap
+#' Deprecated. Use `vheatmap` please.
 #'
 #' Heamap plot function.
-#' @title Function: plotHeat
+#' @title Deprecated: plotHeat
 #' @param datax data.frame. Columns "gene_id" and "agi" are required together with value columns.
 #' @param gids gene_id to subset.
 #' @param agi agi to subset.
@@ -86,10 +95,10 @@ plotHeat <- function(datax, gids=NULL, agi=NULL, alias=NULL,
     }
 }
 
-#' plot heatmap with ggplot2
+#' Deprecated. Use `vheatmap` please.
 #'
 #' Select a subset of genes and plot expression heatmap.
-#' @title Function: plotGHeat
+#' @title Deprecated: plotGHeat
 #' @param dtx data.frame
 #' @param gids names of gene subset for plotting.
 #' @param treats Sample name labels.
@@ -116,7 +125,7 @@ plotGHeat <- function(dtx, gids, treats=NULL, cut.k=8, v.cut=0.5,
     keeps <- keeps[keeps %in% colnames(dtx)]
     hc <- hclust(dist(dtx[, ! colnames(dtx) %in% keeps]), method="complete")
     dtx <- dtx[hc$order, ]
-    dtx <- melt(dtx, varnames = keeps, variable.name = "treatment")
+    dtx <- pivot_longer(dtx, any_of(keeps), names_to = "treatment")
     dtx$gene_id <- factor(dtx$gene_id, levels = unique(dtx$gene_id))
     dtx$value <- round(dtx$value/v.cut) * v.cut
     lbs <- dtx$agi
@@ -142,40 +151,4 @@ plotGHeat <- function(dtx, gids, treats=NULL, cut.k=8, v.cut=0.5,
 
     if (! fill.legend ) p <- p + scale_fill_continuous(guide=FALSE)
     print(p)
-}
-
-.trans_exprs <- function(x) {
-    x[x < 1] <- 1
-    log10(x)
-}
-
-#' @export
-exprsHeatmap <- function(exprs_df,
-                          d_cols=NULL, lb_col='gene_id',
-                          g_ids=NULL, trans_axis=FALSE,
-                          ...){
-    if(! 'gene_id' %in% colnames(exprs_df))
-        stop('Must contain `gene_id` column!')
-    if(any(duplicated(exprs_df)))
-        stop('Duplicated gene id is not allowed!')
-
-    if(! is.null(g_ids))
-        exprs_df <- filter(exprs_df, gene_id %in% g_ids)
-    if(is.null(d_cols)) exprs_mx <- select(exprs_df, where(is.numeric))
-    else exprs_mx <- exprs_df[, d_cols]
-    
-    exprs_mx <- as.matrix(exprs_mx) %>% .trans_exprs
-    ss <- apply(exprs_mx, 1, FUN=function(x) !all(x==0))
-    exprs_mx <- exprs_mx[ss, ]
-    exprs_df <- exprs_df[ss, ]
-    if(trans_axis) {
-        exprs_mx <- t(exprs_mx)
-        pheatmap(exprs_mx, scale='row',
-                 cluster_rows = FALSE, cluster_cols = TRUE,
-                 labels_col=exprs_df[[lb_col]], ...)
-    } else {
-        pheatmap(exprs_mx, scale='row',
-                 cluster_rows = TRUE, cluster_cols = FALSE,
-                 labels_row=exprs_df[[lb_col]], angle_col=0, ...)
-    }
 }

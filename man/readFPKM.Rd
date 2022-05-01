@@ -33,7 +33,7 @@ readFPKM(
 data.frame
 }
 \description{
-Read FPKM data
+Function for Cuff: read FPKM data
 }
 \details{
 Read FPKM data from files, with or without stdev and significant tr.levels.

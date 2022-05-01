@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot-heat.R
 \name{plotHeat}
 \alias{plotHeat}
-\title{Function: plotHeat}
+\title{Deprecated: plotHeat}
 \usage{
 plotHeat(
   datax,
@@ -42,7 +42,7 @@ plotHeat(
 \item{...}{Further params passed to pheatmap function.}
 }
 \description{
-Plot heatmap with pheatmap
+Deprecated. Use \code{vheatmap} please.
 }
 \details{
 Heamap plot function.

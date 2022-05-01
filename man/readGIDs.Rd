@@ -36,7 +36,7 @@ readGIDs(
 \item{cc}{column to return}
 }
 \description{
-readGIDs
+Function for Cuff: readGIDs
 }
 \details{
 readGIDs read in gene_id or agi

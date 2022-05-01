@@ -136,8 +136,8 @@ plotChart <- function(dtx, dts, agi=NULL, alias=NULL, samples=NULL, id.label=FAL
     }
 
     keeps <- colnames(dtx)[colnames(dtx) %in% keeps]    
-    dtx <- melt(dtx, varnames = keeps, variable.name = "lbs", value.name = "lfc")
-    dts <- melt(dts, varnames = keeps, variable.name = "lbs", value.name = "pval")
+    dtx <- pivot_longer(dtx, any_of(keeps), names_to = "lbs", values_to = "lfc")
+    dts <- pivot_longer(dts, any_of(keeps), names_to = "lbs", values_to = "pval")
     dtx$num <- round(dtx$lfc, 2)
     dtx$num[dts$pval < 0.05] <- paste(dtx$num[dts$pval < 0.05], "*")
     dtx$num[dts$pval < 0.01] <- paste0(dtx$num[dts$pval < 0.01], "*")
