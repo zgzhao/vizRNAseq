@@ -11,8 +11,10 @@ plotCPM(
   n.row = NULL,
   cols = NULL,
   lpos = c(0.1, 0.8),
+  scales = "free_y",
   font_size = 16,
-  x.size = 1.3
+  x.size = 1.3,
+  y.title = "Expression (CPM)"
 )
 }
 \arguments{
@@ -24,11 +26,13 @@ plotCPM(
 
 \item{n.row}{integer, passed to ggplot2 facet_wrap}
 
-\item{cols}{passed to ggplot2 scale_fill_manual}
+\item{cols}{passing to ggplot2 scale_fill_manual}
 
-\item{lpos}{passed to ggplot2 legend.position}
+\item{lpos}{passing to ggplot2 legend.position}
 
-\item{font_size}{passed to ggplot2 base_size}
+\item{scales}{passing to ggplot2 facet_wrap}
+
+\item{font_size}{passing to ggplot2 base_size}
 
 \item{x.size}{numeric, x label size}
 }

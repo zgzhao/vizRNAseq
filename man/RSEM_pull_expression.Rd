@@ -4,7 +4,7 @@
 \alias{RSEM_pull_expression}
 \title{RSEM only: pull/extract after \code{\link{RSEM_pipeline}}}
 \usage{
-RSEM_pull_expression(data_dir, gids, smps)
+RSEM_pull_expression(data_dir, gids, smps, min.cpm = -1)
 }
 \arguments{
 \item{data_dir}{character, directory/folder where RSEM pipeline results saved.}
@@ -12,6 +12,8 @@ RSEM_pull_expression(data_dir, gids, smps)
 \item{gids}{character vector, gene ids.}
 
 \item{smps}{character vector, sample names.}
+
+\item{min.cpm}{numeric. Genes whose max level is less than min.cpm will be omitted.}
 }
 \value{
 tibble

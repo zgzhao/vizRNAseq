@@ -243,6 +243,15 @@ RSEM_pipeline <- function(data_dir, treatments, controls,
     dfx %>% full_join(ans, by=c("gene_id", "sample"))
 }
 
+.evfilter <- function(df, v) {
+    df %>% group_by(gene_id) %>%
+        summarise(zz=max(mean, na.rm=T),
+                  sigPos=max(mean+sd)*0.1) %>%
+        filter(zz > {{v}}) %>% select(-zz) %>%
+        left_join(df, by='gene_id') %>%
+        mutate(sigPos=mean+sd+sigPos)
+}
+
 #' Get expression data (mean, sd and significant letters) for visulization (plotCPM )
 #'
 #' Get expression data
@@ -250,15 +259,18 @@ RSEM_pipeline <- function(data_dir, treatments, controls,
 #' @param data_dir character, directory/folder where RSEM pipeline results saved.
 #' @param gids character vector, gene ids.
 #' @param smps character vector, sample names.
+#' @param min.cpm numeric. Genes whose max level is less than min.cpm will be omitted.
 #' @return tibble
 #' @author ZG Zhao
 #' @export
-RSEM_pull_expression <- function(data_dir, gids, smps) {
+RSEM_pull_expression <- function(data_dir, gids, smps, min.cpm=-1) {
     ans <- NULL
     smps <- unique(smps)
     n <- length(smps)
     .rsem_read_expression(data_dir, smps) %>%
         filter(gene_id %in% {{gids}}) %>% 
         arrange(gene_id, sample) %>%
-        .setSigLetters(data_dir=data_dir)
+        .setSigLetters(data_dir=data_dir) %>%
+        .evfilter(v=min.cpm) %>%
+        select(gene_id, mean, sd, sigLett, sigPos, everything())
 }
