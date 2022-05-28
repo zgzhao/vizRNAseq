@@ -34,7 +34,7 @@ statKEGG <- function(gids, gmap, p.cut=0.05, refGenes=NULL) {
     nn <- length(allGenes)  ## total number of genes
     stats <- stats %>%
         mutate(p=pmap_dbl(list(q=n.test, m=n.path),
-                          function(q, m) phyper(q, m, {{nn}} - q, {{k}}, lower.tail = FALSE)))
+                          function(q, m) phyper(q-1, m, {{nn}} - m, {{k}}, lower.tail = FALSE)))
     stats$p.adj <- p.adjust(stats$p, method = "BH")
     stats %>% 
         left_join(
