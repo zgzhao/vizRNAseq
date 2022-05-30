@@ -1,21 +1,3 @@
-#' @name data
-#' @title Useful data/variables
-#' @description constants provided in the package
-#' @details
-#' All variables are `tibbles`:
-#' - ATHGENEANNO: gene annotations of Arabidopsis
-#' - ATHGENEGO: mappings from gene to KEGG indentifier.
-#' - GOFULL: data parsed from go.obo file downloaded from purl.obolibrary.org.
-#' - KEGGFULL: data parse from ko00001.keg file downloaded from KEGG website.
-#' @author ZG Zhao
-#' @examples
-#' library(vizRNAseq)
-#' ATHGENEANNO
-#' ATHGENEGO
-#' GOFULL
-#' KEGGFULL
-NULL
-
 ## ## ================================================
 ## library(vizRNAseq)
 ## onto_file <- '../inst/go.obo'
@@ -109,4 +91,3 @@ NULL
 
 ## library(tidyverse)
 ## setKEGGdata(d.path='../inst')
-
