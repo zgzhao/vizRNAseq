@@ -19,11 +19,9 @@ while(<iFH>){
   @para = /([^\s]+)/g;
   next if $#para < 2;
   $seq = $para[1];  ## matched seqname
-  $blResult{$seq}++;
+  $snames{$seq} = 1;
 }
 close(iFH);
-
-@snames = keys %blResult;  ## array of matched names
 
 ## filter fasta file
 open(iFH, "<$ARGV[1]");
@@ -35,12 +33,7 @@ while(<iFH>){
   if(/^>/) {
     $matched = 0;
     @name = /^>([^\s]+)/;
-    foreach (@snames) {
-      next if $matched;
-      if($_ eq $name[0]) {
-	$matched = 1;
-      }
-    }
+    $matched = 1 if $snames{$name[0]};
   }
   ## print matched sequences only
   next if ! $matched;
