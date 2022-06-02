@@ -4,7 +4,7 @@
 \alias{bestMatches}
 \title{Get best matches from blast results.}
 \usage{
-bestMatches(blast_result, blast_db, prot = FALSE)
+bestMatches(blast_result, blast_db, prot = FALSE, force.perl = TRUE)
 }
 \arguments{
 \item{blast_result}{BLAST out put file in fmt6 format}
@@ -12,6 +12,8 @@ bestMatches(blast_result, blast_db, prot = FALSE)
 \item{blast_db}{BLAST db file (fasta) when you do blast}
 
 \item{prot}{TRUE/FALSE. Protein blast db (not query sequences).}
+
+\item{force.perl}{TRUE/FALSE, force to use perl program for sequence processing.}
 }
 \value{
 tibble
