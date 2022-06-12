@@ -1,6 +1,5 @@
 mseq_len <- function(ss, ee) {
-    rr <- sort(c(ss, ee))
-    xx <- IRanges(start=rr[1], end = rr[2])
+    xx <- IRanges(start=ss, end = ee)
     width(IRanges::reduce(xx))
 }
 
@@ -23,7 +22,10 @@ bestMatches <- function(blast_result, blast_db, prot=FALSE, force.perl=TRUE) {
                       'qstart', 'qend',
                       'sstart', 'send',
                       'evalue', 'bit_score')
+    ss <- apply(dtx[, 9:10], 1, min)
+    ee <- apply(dtx[, 9:10], 1, max)
     ans <- dtx %>%
+        mutate(sstart = {{ss}}, send={{ee}}) %>% 
         group_by(gene_id, target) %>%
         summarise(n_match = mseq_len(sstart, send),
                   s_mean = mean(bit_score),

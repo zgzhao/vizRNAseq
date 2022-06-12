@@ -4,7 +4,13 @@
 \alias{RSEM_expression}
 \title{RSEM only: calculate gene expressions}
 \usage{
-RSEM_expression(d.path, g.type = "gene", d.type = "mean", CPM = TRUE)
+RSEM_expression(
+  d.path,
+  g.type = "gene",
+  d.type = "mean",
+  CPM = TRUE,
+  f.pattern = NULL
+)
 }
 \arguments{
 \item{d.path}{path to the folder containing "gene.count.matrix" files}
@@ -14,6 +20,8 @@ RSEM_expression(d.path, g.type = "gene", d.type = "mean", CPM = TRUE)
 \item{d.type}{data type: "mean" or "sd"}
 
 \item{CPM}{TRUE/FALSE. If TRUE (default) return CPM, otherwise return TMM.}
+
+\item{f.pattern}{character, regular expression to subset files.}
 }
 \value{
 tibble, first column is "gene_id"

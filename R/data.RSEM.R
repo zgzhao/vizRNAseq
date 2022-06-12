@@ -31,16 +31,21 @@ na2zero <- function(x){x[is.na(x)] <- 0; x}
 #' @param g.type gene type: "gene" or "isoform"
 #' @param d.type data type: "mean" or "sd"
 #' @param CPM TRUE/FALSE. If TRUE (default) return CPM, otherwise return TMM.
+#' @param f.pattern character, regular expression to subset files.
 #' @return tibble, first column is "gene_id"
 #' @author zhao
 #' @export
-RSEM_expression <- function(d.path, g.type="gene", d.type="mean", CPM=TRUE) {
+RSEM_expression <- function(d.path, g.type="gene", d.type="mean", CPM=TRUE, f.pattern=NULL) {
     if(CPM)
         patx <- paste0("\\.", g.type, "\\.counts\\.matrix$")
     else
         patx <- paste0("\\.", g.type, "\\.TMM\\.EXPR\\.matrix$")
     
     files <- list.files(d.path, pattern=patx, full.names = TRUE)
+    if(! is.null(f.pattern)) {
+        sels <- grepl(f.pattern, basename(files))
+        files <- files[sels]
+    }
     ans <- NULL
     for (fx in files) {
         anx <- NULL
@@ -130,48 +135,75 @@ RSEM_comparison <- function(d.path, control, treatment, g.type="gene"){
 #' @param CPM TRUE/FALSE. If TRUE (default) return CPM, otherwise return TMM.
 #' @param DEG.fc numeric, log(fold_changed) threshold.
 #' @param annotations supply a gene annotation data.frame with `gene_id` column if you want to include gene annotation for DEGs.
+#' @param f.pattern character, regular expression to subset files.
 #' @return NULL. Data will be saved to output dir.
 #' @author ZG Zhao
 #' @export
 RSEM_pipeline <- function(data_dir, treatments, controls,
                           output_dir="data", isoform=FALSE, CPM=TRUE,
-                          DEG.fc=1, annotations=NULL){
+                          DEG.fc=1, DEG.only=FALSE,
+                          annotations=NULL, f.pattern=NULL){
+    g.type <- if(isoform) "isoform" else "gene"
     samples <- list.files(data_dir, pattern="\\.gene\\.counts\\.matrix$")
+    if(! is.null(f.pattern)) {
+        sels <- grepl(f.pattern, basename(samples))
+        samples <- samples[sels]
+    }
     if(length(samples) < 1)
         stop(paste0('The folder `', data_dir, '` is not a valid RSEM output folder!'))
-    
     if(! dir.exists(output_dir)) dir.create(output_dir, recursive=T)
-    
-    ## export expression data
-    g.type <- if(isoform) "isoform" else "gene"
-    exprs <- RSEM_expression(data_dir, g.type = g.type, d.type = "mean", CPM=CPM)
-    fx <- file.path(output_dir, "all.exprs.mean.matrix.csv")
-    write.csv(exprs, fx, row.names=FALSE)
-    cat(paste("File exported:", fx, '\n'))
-    sds <- RSEM_expression(data_dir, g.type = g.type, d.type = "sd")
-    fx <- file.path(output_dir, "all.exprs.sd.matrix.csv")
-    write.csv(sds, fx, row.names=FALSE)
-    cat(paste("File exported:", fx, '\n'))
 
-    ## export complete p table
-    samples <- sub('\\.gene\\.counts\\.matrix$', '', samples)
-    ns <- length(samples)
-    dx <- select(exprs, gene_id)
-    cat("Calculating pairwise p values ...\n")
-    for (i in 1:(ns-1)) {
-        for (j in (i+1):ns) {
+    if(DEG.only) {
+        msn <- "Skip exporting of gene expression values (mean, sd, p)!\n"
+        if("crayon" %in% .packages(all=T))
+            msn <- red(msn)
+        cat(msn)
+    } else {
+        ## export expression data
+        exprs <- RSEM_expression(data_dir, g.type = g.type, d.type = "mean",
+                                 CPM=CPM, f.pattern=f.pattern)
+        fx <- file.path(output_dir, "all.exprs.mean.matrix.csv")
+        write.csv(exprs, fx, row.names=FALSE)
+        cat(paste("File exported:", fx, '\n'))
+        sds <- RSEM_expression(data_dir, g.type = g.type, d.type = "sd",
+                               CPM=CPM, f.pattern=f.pattern)
+        fx <- file.path(output_dir, "all.exprs.sd.matrix.csv")
+        write.csv(sds, fx, row.names=FALSE)
+        cat(paste("File exported:", fx, '\n'))
+
+        ## export complete p table
+        ## prepare for parallel computing
+        samples <- sub('\\.gene\\.counts\\.matrix$', '', samples)
+        ns <- length(samples)
+        its <- list()
+        for (i in 1:(ns-1)) 
+            for (j in (i+1):ns)
+                its <- c(its, list(c(i, j)))
+
+        if(.Platform$OS.type == "unix") {
+            require("parallel")
+            cat("Parallel computation is enabled!\n")
+            xapply <- function(...) mclapply(..., mc.cores=detectCores() -1)
+        } else {
+            xapply <- function(...) lapply(...)
+        }
+        cat("Calculating pairwise p values ...\n")
+        ans <- xapply(its, FUN=function(ndx){
+            i <- ndx[1]; j <- ndx[2]
             aa <- samples[i]
             bb <- samples[j]
-            dx <- RSEM_comparison(data_dir, aa, bb, g.type=g.type) %>%
+            RSEM_comparison(data_dir, aa, bb, g.type=g.type) %>%
                 select(gene_id, P.Value) %>%
                 mutate(P.Value=round(P.Value, 3)) %>% 
-                rename("{aa}-{bb}" := P.Value) %>%
-                full_join(dx, by="gene_id")
-        }
+                rename("{aa}-{bb}" := P.Value)
+        })
+        ## arrange and export results
+        dx <- select(exprs, gene_id)
+        for(xx in ans) dx <- left_join(dx, xx, by="gene_id")
+        fx <- file.path(output_dir, "all.pairwise.p.matrix.csv")
+        write.csv(dx, fx, row.names=FALSE)
+        cat(paste("File exported:", fx, '\n'))
     }
-    fx <- file.path(output_dir, "all.pairwise.p.matrix.csv")
-    write.csv(dx, fx, row.names=FALSE)
-    cat(paste("File exported:", fx, '\n'))
     
     ## export comparison matrices and DEG lists
     if(length(setdiff(c(treatments, controls), samples)) > 0)

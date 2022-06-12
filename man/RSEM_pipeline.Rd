@@ -12,7 +12,9 @@ RSEM_pipeline(
   isoform = FALSE,
   CPM = TRUE,
   DEG.fc = 1,
-  annotations = NULL
+  DEG.only = FALSE,
+  annotations = NULL,
+  f.pattern = NULL
 )
 }
 \arguments{
@@ -31,6 +33,8 @@ RSEM_pipeline(
 \item{DEG.fc}{numeric, log(fold_changed) threshold.}
 
 \item{annotations}{supply a gene annotation data.frame with \code{gene_id} column if you want to include gene annotation for DEGs.}
+
+\item{f.pattern}{character, regular expression to subset files.}
 }
 \value{
 NULL. Data will be saved to output dir.
