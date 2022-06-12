@@ -58,8 +58,8 @@ bestMatches <- function(blast_result, blast_db, prot=FALSE, force.perl=TRUE) {
     ans %>%
         left_join(tinfo, by='target') %>% 
         mutate(pct=round(n_match/n_target*100, 2)) %>%
-        arrange(desc(pct), desc(n_match)) %>%
-        distinct(gene_id, .keep_all = T) %>%
-        select(gene_id, target, n_match, n_target, pct, s_mean, e_mean)
+        arrange(gene_id, desc(pct), desc(n_match)) %>%
+        select(gene_id, target, n_match, n_target, pct, s_mean, e_mean) %>%
+        distinct(gene_id, target, .keep_all=T)
 }
 
