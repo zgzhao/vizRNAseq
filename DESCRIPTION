@@ -8,6 +8,7 @@ Description: RNAseq data processing and visualization for publication.
 License: GPL-3
 Encoding: UTF-8
 Depends:
+	parallel,
 	MatrixGenerics,
 	Biostrings,
 	edgeR,
@@ -24,10 +25,10 @@ Depends:
 	gplots,
 	multcompView,
 	VennDiagram,
-	igraph
+	tidygraph,
+	ggraph
 Suggests:
 	parallel
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
-
+RoxygenNote: 7.2.3

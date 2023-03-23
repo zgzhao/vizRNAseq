@@ -37,9 +37,21 @@ bestORFs <- function(fasta_file) {
     )
     aalist <- mclapply(1:6, FUN=function(i) {
         rex <- exAAA(proteins[[i]])
-        names(rex) <- paste0(names(rex), '_orf', i)
+        ndx <- paste0('_orf', i)
+        namex <- sub('^([^ ]+)', paste0('\\1', ndx), names(rex))
+        names(rex) <- namex
         rex
     }, mc.cores = 6)
-    rex <- unlist(AAStringSetList(aalist))
-    rex[ !duplicated(rex)]
+    aalist <- unlist(AAStringSetList(aalist))
+    xnames <- sub('_orf.+$', '', names(aalist))
+    ww <- width(aalist)
+    sels <- NULL
+    for(xx in unique(xnames)) {
+        ndx <- which(xnames == xx)
+        sels <- c(sels, ndx[which(ww[ndx] == max(ww[ndx]))[1]])
+    }
+    aalist <- aalist[sels]
+    names(aalist) <- sub('_orf[1-3]+', ' +', names(aalist))
+    names(aalist) <- sub('_orf[4-6]+', ' -', names(aalist))
+    aalist
 }

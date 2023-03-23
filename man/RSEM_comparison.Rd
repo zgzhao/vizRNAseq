@@ -2,7 +2,7 @@
 % Please edit documentation in R/data.RSEM.R
 \name{RSEM_comparison}
 \alias{RSEM_comparison}
-\title{Two-sample comparison for DEG identification.}
+\title{RSEM: two-sample comparison for DEG identification.}
 \usage{
 RSEM_comparison(d.path, control, treatment, g.type = "gene")
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/data.RSEM.R
 \name{RSEM_pipeline}
 \alias{RSEM_pipeline}
-\title{RSEM only: data export after abundance estimated.}
+\title{RSEM: data export after abundance estimated.}
 \usage{
 RSEM_pipeline(
   data_dir,
@@ -12,7 +12,6 @@ RSEM_pipeline(
   isoform = FALSE,
   CPM = TRUE,
   DEG.fc = 1,
-  DEG.only = FALSE,
   annotations = NULL,
   f.pattern = NULL
 )

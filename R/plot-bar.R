@@ -17,7 +17,7 @@
 plotCPM <- function(dfx, sig.size=6, y.expand=1.2,
                     n.row=NULL, cols=NULL, lpos=c(0.1, 0.8), scales='free_y',
                     font_size=16,
-                    x.size=1.3, y.title='Expression (CPM)'){
+                    x.size=1.3, y.title='Expression (CPM)') {
     cnames <- colnames(dfx)
     if (! all(c("gene_id", "mean", "sd", "sigLett", "treatment", "fill") %in% cnames))
         stop("Invalid data format!")
@@ -69,7 +69,7 @@ plotCPM <- function(dfx, sig.size=6, y.expand=1.2,
 #' @export
 plotFPKM <- function(dtx, agi=NULL, alias=NULL, gids=NULL,
                      filename=NULL, width=400, height=300, sig.size=12, y.expand=1.05, nrow=NULL, ncol=NULL, 
-                     cols=c("gray80", "gray30"), gtheme=NULL){
+                     cols=c("gray80", "gray30"), gtheme=NULL) {
 
     if (! "agi" %in% colnames(dtx)) dtx$agi <- dtx$gene_id
     if (!is.null(gids)) dtx <- dtx[dtx$gene_id %in% gids, ]
@@ -90,7 +90,7 @@ plotFPKM <- function(dtx, agi=NULL, alias=NULL, gids=NULL,
     
     if (nrow(dtx) < 1) stop("No data found for your agi.")
     
-    xlabeller <- function(labels, multi_line = FALSE){
+    xlabeller <- function(labels, multi_line = FALSE) {
         labels <- label_value(labels, multi_line = multi_line)
         lapply(labels, function(values) {
             values <- paste0("list(`", alias[values], "`)")
@@ -140,7 +140,7 @@ plotFPKM <- function(dtx, agi=NULL, alias=NULL, gids=NULL,
 #' @author ZG Zhao
 #' @export
 plotChart <- function(dtx, dts, agi=NULL, alias=NULL, samples=NULL, id.label=FALSE, gtheme=NULL, sig.size=5, clust=FALSE, 
-                      del=NULL, num=FALSE, flip=FALSE, fname=NULL, width=400, height=300, ...){
+                      del=NULL, num=FALSE, flip=FALSE, fname=NULL, width=400, height=300, ...) {
 
     if (! "agi" %in% colnames(dtx)) dtx$agi <- dtx$gene_id
     if ( is.null(agi) )  stop("agi must be set.")

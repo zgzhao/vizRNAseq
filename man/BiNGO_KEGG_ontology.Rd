@@ -2,12 +2,12 @@
 % Please edit documentation in R/BiNGO.R
 \name{BiNGO_KEGG_ontology}
 \alias{BiNGO_KEGG_ontology}
-\title{Function BiNGO_KEGG_ontology}
+\title{Data convert: generate KEGG ontology file for BiNGO (Cytoscape plugin)}
 \usage{
 BiNGO_KEGG_ontology(out.file)
 }
 \arguments{
-\item{out.file}{}
+\item{out.file}{file name for output}
 }
 \value{
 out.file written

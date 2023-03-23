@@ -2,14 +2,14 @@
 % Please edit documentation in R/BiNGO.R
 \name{BiNGO_KEGG_annotation}
 \alias{BiNGO_KEGG_annotation}
-\title{Function BiNGO_KEGG_annotation}
+\title{Data convert: generate KEGG annotation file for BiNGO (Cytoscape plugin)}
 \usage{
 BiNGO_KEGG_annotation(df.anno, out.file, species.name)
 }
 \arguments{
 \item{df.anno}{gene to KO annotation data.frame, whose first column is gene id and second column is KEGG ko.}
 
-\item{out.file}{path to save the final annotation file.}
+\item{out.file}{file name for output}
 
 \item{species.name}{character. Name of your species.}
 }

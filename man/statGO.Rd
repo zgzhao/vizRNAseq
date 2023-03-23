@@ -2,16 +2,16 @@
 % Please edit documentation in R/stats.R
 \name{statGO}
 \alias{statGO}
-\title{GO terms enrichment/statistical analysis.}
+\title{GO terms enrichment/statistical analysis}
 \usage{
-statGO(gids, gmap = ATHGENEGO, refGenes = NULL, p.cut = 0.05)
+statGO(gids, gmap, allGids, refGids, p.cut = 0.05, ngene.min = 10)
 }
 \arguments{
 \item{gids}{character vector of gene ids.}
 
 \item{gmap}{data.frame or tibble with at least two columns: gene_id and go (GO identifiers).}
 
-\item{refGenes}{character vector. Reference gene set, if NULL (default), all genes in the gene map (provided by gmap param) will be used.}
+\item{allGids}{character vector. Reference gene set, if NULL (default), all genes in the gene map (provided by gmap param) will be used.}
 
 \item{p.cut}{numeric (0, 1). Default: 0.05}
 }

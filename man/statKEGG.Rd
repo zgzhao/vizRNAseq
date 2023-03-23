@@ -2,18 +2,28 @@
 % Please edit documentation in R/stats.R
 \name{statKEGG}
 \alias{statKEGG}
-\title{KEGG pathway enrichment analysis.}
+\title{KEGG pathway enrichment analysis}
 \usage{
-statKEGG(gids, gmap, p.cut = 0.05, refGenes = NULL)
+statKEGG(
+  gids,
+  gmap,
+  allGids,
+  refGids = allGids,
+  p.cut = 0.05,
+  ngene.min = 10,
+  plant = TRUE
+)
 }
 \arguments{
 \item{gids}{character vector: gene ids to analysis}
 
 \item{gmap}{data.frame or tibble with gene_id and ko (KEGG identifiers for genes such as K00185).}
 
+\item{allGids}{character vector of reference gene set.}
+
 \item{p.cut}{cut off value of BH adjust p value. Hypergeometric test is applied.}
 
-\item{refGenes}{character vector of reference gene set.}
+\item{ngene.min}{integer, minimum number of genes in test path (default: 10).}
 }
 \value{
 tibble

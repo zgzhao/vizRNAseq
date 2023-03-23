@@ -1,7 +1,8 @@
-#' Function for Cuff: readGIDs
+#' Cuff: read in gene_id or agi
 #'
-#' readGIDs read in gene_id or agi
-#' @title Function readGIDs
+#' For data from Cuff RNAseq pipeline only.
+#' @title Cuff RNAseq: filter gene ids from expression result files
+#' @aliases readGIDs
 #' @param files expression file
 #' @param reg regulation type: all, up or down
 #' @param agi TRUE/FALSE. Return agi or gene_id instead.
@@ -13,7 +14,7 @@
 #' @param cc column to return
 #' @author ZG Zhao
 #' @export
-readGIDs <- function(files, reg=c("all", "up", "down"), agi=FALSE, fc=1.5,
+cuff_filter_gids <- function(files, reg=c("all", "up", "down"), agi=FALSE, fc=1.5,
                      labels=NULL, FPKM.cut=0, q.cut=1, p.cut=1, ensemble=NULL) {
     reg <- reg[1]
     xcc <- if (agi) "agi" else "gene_id"
@@ -45,6 +46,9 @@ readGIDs <- function(files, reg=c("all", "up", "down"), agi=FALSE, fc=1.5,
     }
     results
 }
+
+#' @export
+readGIDs <- function(...) cuff_filter_gids(...)
 
 #' Function for Cuff: read in and merge data.
 #'
@@ -109,7 +113,7 @@ meltData <- function(dt1, dt2, value.name="value", treats=NULL, tr.levels=NULL) 
 #' @return data.frame
 #' @author ZG Zhao
 #' @export
-readFPKM <- function(xfiles, treats, tr.levels=NULL, std=TRUE, sig=TRUE, xpkm=FALSE, control=""){
+readFPKM <- function(xfiles, treats, tr.levels=NULL, std=TRUE, sig=TRUE, xpkm=FALSE, control="") {
     if (xpkm) {
         vv1 <- "XPKM1"; vv2 <- "XPKM2"; ss1 <- "xsd1"; ss2 <- "xsd2"
     } else {

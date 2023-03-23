@@ -1,19 +1,19 @@
-#' Nuclear genes
+#' Filter nuclear genes from a gene name vector (remove plastid genes).
 #'
-#' Get arabidopsis nuclear genes from a vecter.
-#' @title nugenes function
+#' This function is for Arabidopsis only.
+#' @title Arabidopsis: filter nuclear genes
 #' @param x character vecter.
 #' @return character vecter.
 #' @author ZG Zhao
 #' @export
-nugenes <- function(x) {
+ath_nugenes <- function(x) {
     grep("^AT[1-5]G", x, value = TRUE)
 }
 
-#' Multiple intersect
-#'
 #' Get intersect of a list. The atoms exist in all list elements are returned.
-#' @title Multiple intersect function
+#'
+#' The general \code{\link{intersect }} function accepts two vectors only. `mintersect` is more convenient for multiple intersect.
+#' @title intersect function for list
 #' @param x list.
 #' @return vector
 #' @author ZG Zhao

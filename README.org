@@ -67,44 +67,41 @@ The package can be install with *devtools* from *github* by execute the followin
 #+end_SRC
 - 其他数据
   - DEG列表：gids
-  - 参考基因列表：refs
+  - 参考基因列表1：allGids，用于P值统计
+  - 参考基因列表2：refGids，用于确定AEGS（真实富集基因集）
+  - 途径最少基因：ngene.min，少于此数的途径不做富集分析
 #+begin_SRC R :exports code :tangle yes :eval never
-  res <- statKEGG(gids, komap, refGenes = refs) %>%
-      filter(n > 1)
+  enrich_result <- statKEGG(gids, komap, allGids = allExpressGeneList, refGids=DEGlist, ngene.min=10)
 #+end_SRC
-最后一步`filter(n > 1)`筛选富集基因数超过1的通路，可根据需要修改
 
-*** 网络群组
+*** 富集网络分析
 #+begin_example
-nxx <- graphTerms(res, percent = T)
-gxx <- membership(nxx$community)
-aaa <- tibble(ID=V(nxx$graph)$name) %>%
-    left_join(res %>% select(ID, n, desc), by='ID') %>%
-    mutate(desc=sub("^.+;", '', desc))
-plot(nxx$community, nxx$graph, vertex.label=aaa$desc, vertex.label.cex=1.5)
+enrich_network <- enrich_to_graph(enrich_result)
+plotEnrich(enrich_network, layout='kk')
 #+end_example
+- 具体参数请查看函数使用说明
 
 *** 数据整理和输出
+- 统计结果
 #+begin_example
-rex <- res %>% 
-    left_join(tibble(ID=names(gxx), group=as.integer(gxx)), by='ID') %>%
-    select(group, everything()) %>% 
-    arrange(group, level, p.adj)
-
-rex %>% select(-where(is.list)) %>% 
-    write.csv('results.KEGG.csv', row.names=F)
+enrich_result %>% 
+  select(-genes)
 #+end_example
+- 基因列表
+#+begin_example
+enrich_result %>% 
+  select(ID, genes) %>% 
+  unnest(genes) %>% 
+  rename(gene_id=genes, ko=ID)
+#+end_example
+
 ** GO分析
 - 使用`statGO`函数
-- 分析步骤和KEGG分析类似，需要准备gomap表格，可参考ATHGENEGO变量格式：
-
-#+begin_SRC R :exports code :tangle yes :eval never
-  str(ATHGENEGO)
-  statGO(gids, gomap, refGenes = refs)
-#+end_SRC
+- 分析步骤和KEGG分析类似，需要准备gomap表格，可参考ATHGENEGO变量格式
 
 * 数据可视化
 请参考函数使用说明
 - plotVenn：韦恩图
 - vheatmap：热图
 - plotCPM: 表达量柱形图
+- plotEnrich：富集网络

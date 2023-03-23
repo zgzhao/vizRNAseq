@@ -2,7 +2,7 @@
 % Please edit documentation in R/data.RSEM.R
 \name{RSEM_pull_expression}
 \alias{RSEM_pull_expression}
-\title{RSEM only: pull/extract after \code{\link{RSEM_pipeline}}}
+\title{RSEM: pull/extract after \code{\link{RSEM_pipeline}}}
 \usage{
 RSEM_pull_expression(data_dir, gids, smps, min.cpm = -1)
 }

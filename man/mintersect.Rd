@@ -2,7 +2,7 @@
 % Please edit documentation in R/helper.R
 \name{mintersect}
 \alias{mintersect}
-\title{Multiple intersect function}
+\title{intersect function for list}
 \usage{
 mintersect(x)
 }
@@ -13,10 +13,10 @@ mintersect(x)
 vector
 }
 \description{
-Multiple intersect
+Get intersect of a list. The atoms exist in all list elements are returned.
 }
 \details{
-Get intersect of a list. The atoms exist in all list elements are returned.
+The general \code{\link{intersect }} function accepts two vectors only. \code{mintersect} is more convenient for multiple intersect.
 }
 \author{
 ZG Zhao

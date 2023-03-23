@@ -2,7 +2,7 @@
 % Please edit documentation in R/data.RSEM.R
 \name{RSEM_expression}
 \alias{RSEM_expression}
-\title{RSEM only: calculate gene expressions}
+\title{RSEM: calculate gene expressions}
 \usage{
 RSEM_expression(
   d.path,

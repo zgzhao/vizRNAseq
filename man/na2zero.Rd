@@ -2,7 +2,7 @@
 % Please edit documentation in R/data.RSEM.R
 \name{na2zero}
 \alias{na2zero}
-\title{Convert NA to zero}
+\title{Helper: convert NA to zero}
 \usage{
 na2zero(x)
 }
